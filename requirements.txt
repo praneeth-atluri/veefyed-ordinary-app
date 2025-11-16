@@ -1,0 +1,9 @@
+streamlit
+pandas
+requests
+beautifulsoup4
+python-Levenshtein
+lxml
+regex
+google-api-python-client
+tqdm
