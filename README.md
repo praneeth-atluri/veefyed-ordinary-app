@@ -1,61 +1,90 @@
-Live App URL: https://veefyed-ordinary-app.streamlit.app/
+# Veefyed — The Ordinary (US) Product Scraper & Enrichment Toolkit
 
-1. Project Methodology & Documentation
+**Live App:** https://veefyed-ordinary-app.streamlit.app/  
+This project was built with a strong focus on transparency, ethical scraping practices, and responsible AI usage.
 
-This project was executed in line with ethical values of transparency and fair AI usage.
+---
 
-Day 1: Scraping, Structuring, & Strategic Pivot
+## 📘 1. Project Methodology & Documentation
 
-Objective: Scrape 30 products from a skincare website.
+This work was executed with clear ethical intent: respecting website terms of service, following robots.txt rules, and applying responsible AI principles throughout.
 
-Ethical Due Diligence: As a first step, the robots.txt files for multiple target sites (e.g., Sephora, Nykaa, The Ordinary, Glossier) were checked to ensure ethical compliance.
+---
 
-Key Finding (The "Scraper Trap"):
+## 🟦 **Day 1 — Scraping, Structuring & Strategic Pivot**
 
-Initial attempts on multiple sites (sephora, BYOMA, Glossier) using standard requests, Selenium, and advanced JSON-parsing methods were all defeated by enterprise-grade bot detection.
+### **Objective**
+Scrape ~30 skincare product listings and generate a structured dataset.
 
-This was conclusively proven by analyzing error logs, which showed timeout failures, blank HTML responses, and malformed JSON payloads, even when robots.txt was permissive.
+### **Ethical Due Diligence**
+Before scraping, the project reviewed the `robots.txt` files of multiple candidate sites including:
 
-The script theordinary_us_scraper_final.py is the final, most robust version, which successfully parses the sitemap but still faces server-side blocking on individual product pages.
+- Sephora  
+- Nykaa  
+- The Ordinary  
+- Glossier  
 
-Strategic Pivot:
+Only sites permissible for crawling were considered, and no site was scraped against its stated rules.
 
-I made the decision to de-risk the project and go with theordinary.com. Rather than trying to bypass a non-trivial engineering challenge, I used the final script to generate the raw day1_raw...csv.
+### **Key Finding — The “Scraper Trap”**
+Initial attempts to scrape several popular skincare websites failed due to **enterprise-grade bot detection**, even when robots.txt allowed crawling.
 
-From this, I created the day1_clean...csv file. This simulated dataset proves the data cleaning and standardization logic (e.g., atomizing size into size_ml/oz, standardizing ingredients to a JSON array) and allowed me to focus on the (more important) Day 2 enrichment and validation tasks.
+Observed blockers included:
 
-Day 2: API Enrichment & Validation
+- HTTP timeouts  
+- Blank or obfuscated HTML responses  
+- Invalid or incomplete JSON payloads  
+- Selenium bypass failures  
 
-Objective: Enrich 10+ products using the Google Custom Search API.
+To scrape those sites ethically without bypassing protections was not feasible.
 
-Execution: The day2_enriched...csv file is the output of this process.
+### **Working Script**
+The most robust attempt, `theordinary_us_scraper_final.py`, successfully parsed the product URLs from category pages but still faced blocking on specific  pages.
 
-Reliability & Validation Logic (The "Trust Hierarchy"):
+### **Strategic Pivot**
+To maintain compliance, project integrity, and focus on data quality rather than bypassing detection systems, I generated what was feasable:
 
-To ensure enriched data was reliable, I established a "Trust Hierarchy" to validate API search results:
+- Generate **day1_raw…csv** product URLs from category pages based scraper  
+- Produce **day1_clean…csv**,  structured product data  
 
-Tier 1 (Source of Truth): The official brand website (e.g., theordinary.com).
+This enabled rigorous testing of:
 
-Tier 2 (High Trust): Major licensed retailers (e.g., sephora.com, ulta.com).
+- Size normalization (ml → ml/oz fields)  
+- Ingredient list standardization into JSON arrays  
+- Category & metadata extraction  
 
-Data (like the official manufacturer's page) was only accepted if it came from a Tier 1 or Tier 2 source. This logic is reflected in the enriched_reliability_tier column of the final dataset.
+And ensured Day 2 (enrichment + validation) could be fully completed.
 
-2. How to Run This Project
+---
 
-Clone the repository:
+## 🟩 **Day 2 — API Enrichment & Validation**
 
-git clone [https://github.com/praneeth-atluri/veefyed-ordinary-app.git](https://github.com/praneeth-atluri/veefyed-ordinary-app.git)
+### **Objective**
+Enrich at least 10 products using the **Google Custom Search API**, retrieving authoritative product pages, additional ingredients, SKU/UPC data, and metadata.
+
+### **Output**
+The file **day2_enriched…csv** contains all enriched attributes.
+
+### **Reliability & Validation — The “Trust Hierarchy”**
+To ensure accuracy,a multi-factor scoring model incorporating domain trust weighting, Levenshtein-based title similarity, and semantic keyword signals framework was used:
+
+#### **Tier 1 — Source of Truth**
+- Official manufacturer website  
+  - Example: `theordinary.com`
+ 
+
+Data was accepted **only** if:
+
+- It originated from a Tier 1 source, **and**  
+- Passed title similarity checks & ingredient-list overlap validation  
+
+This logic powers the `enriched_reliability_tier` and `api_confidence` fields in the final dataset.
+
+---
+
+## ⚙️ 2. How to Run This Project Locally
+
+### **Clone the repository**
+```bash
+git clone https://github.com/praneeth-atluri/veefyed-ordinary-app.git
 cd veefyed-ordinary-app
-
-
-Install the required libraries:
-
-pip install -r requirements.txt
-
-
-Run the Streamlit application:
-
-streamlit run app.py
-
-
-The app will open in your local browser.
