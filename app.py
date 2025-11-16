@@ -442,7 +442,7 @@ else:
         """
     )
 
-    st.subheader("How the enrichment works (plain English)")
+    st.subheader("How the enrichment works ")
     st.markdown(
     """
     1. We start by creating an API Key and a Custom Search Engine (CX) in Google Cloud so the script can safely use Google Custom Search.
@@ -474,7 +474,7 @@ curl 'https://www.googleapis.com/customsearch/v1?key=API_KEY&cx=CX&q=niacinamide
         language='bash'
     )
 
-    st.subheader("Enrichment script (drop-in)")
+    st.subheader("Enrichment script ")
     st.markdown("Save the enrichment script as `day2_enrich_google_cse_populated.py` and make sure your API_KEY and CX are set inside the file.")
     st.code("""
 #!/usr/bin/env python3
